@@ -8,6 +8,7 @@ class Land():
         self.pos = [x, y]
         self.corn = corn
         self.plant = [x + 260, y + 160]
+        self.corn_loc = [x - 113, y + 270]
 
 chicken_food_timer = 0
 corn_timer = 0
@@ -42,17 +43,25 @@ corn3 = 15
 egg1 = 27
 
 #POSITIONS
-mon_width = 1920
+main_display = False
+left_display = True
+display_width = 1920
+if main_display:
+    display_offset = 0
+elif not main_display and left_display:
+    display_offset = display_width * -1
+elif not main_display and not left_display:
+    display_offset = display_width
 
-lands.append(Land(mon_width + 630, 564, corn=16))
-lands.append(Land(mon_width + 512, 618, corn=15))
-lands.append(Land(mon_width + 597, 659, corn=15))
+lands.append(Land(display_offset + 952, 587, corn=corn1))
+lands.append(Land(display_offset + 825, 651, corn=corn2))
+lands.append(Land(display_offset + 918, 692, corn=corn3))
 
 chicken_coops = []
-chicken_coops.append(ChickenCoop(mon_width + 776, 445, egg1))
-chicken_coops.append(ChickenCoop(mon_width + 734, 509, egg1))
+chicken_coops.append(ChickenCoop(display_offset + 1061, 527, egg1))
+chicken_coops.append(ChickenCoop(display_offset + 1105, 461, egg1))
 
-mill = Mill(mon_width + 625, 486)
+mill = Mill(display_offset + 931, 491)
 
 def move_and_click(pos):
     pyautogui.moveTo(pos[0], pos[1], 0.5)
@@ -69,6 +78,7 @@ def harvest_corn():
 def plant_corn():
     for land in lands:
         move_and_click(land.pos)
+        move_and_click(land.corn_loc)
         move_and_click(land.plant)
 
     global corn_timer
@@ -123,6 +133,7 @@ chicken_time = 6 * 60 + 30
 
 plant_corn()
 while True:
+    #todo: remove this hardcode
     if corn > 161 and not chicken_food_in_progress:
         start_chicken_food()
 
