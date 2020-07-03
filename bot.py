@@ -31,8 +31,8 @@ class Mill():
 lands = []
 
 #RESOURCES
-corn = 484
-chicken_food = 490
+corn = 438
+chicken_food = 450
 eggs = 0
 
 #GAINS
@@ -44,7 +44,7 @@ egg1 = 27
 
 #POSITIONS
 main_display = False
-left_display = True
+left_display = False
 display_width = 1920
 if main_display:
     display_offset = 0
@@ -53,15 +53,15 @@ elif not main_display and left_display:
 elif not main_display and not left_display:
     display_offset = display_width
 
-lands.append(Land(display_offset + 952, 587, corn=corn1))
-lands.append(Land(display_offset + 825, 651, corn=corn2))
-lands.append(Land(display_offset + 918, 692, corn=corn3))
+lands.append(Land(display_offset + 635, 563, corn=corn1))
+lands.append(Land(display_offset + 514, 623, corn=corn2))
+lands.append(Land(display_offset + 598, 658, corn=corn3))
 
 chicken_coops = []
-chicken_coops.append(ChickenCoop(display_offset + 1061, 527, egg1))
-chicken_coops.append(ChickenCoop(display_offset + 1105, 461, egg1))
+chicken_coops.append(ChickenCoop(display_offset + 773, 440, egg1))
+chicken_coops.append(ChickenCoop(display_offset + 736, 504, egg1))
 
-mill = Mill(display_offset + 931, 491)
+mill = Mill(display_offset + 613, 469)
 
 def move_and_click(pos):
     pyautogui.moveTo(pos[0], pos[1], 0.5)
@@ -99,6 +99,7 @@ def start_chicken_food():
 
 def get_chicken_food():
     move_and_click(mill.pos)
+    global chicken_food_in_progress
     chicken_food_in_progress = False
 
     global chicken_food
@@ -140,7 +141,7 @@ while True:
     if chicken_food > len(chicken_coops) * 10 and not chicken_in_progress:
         start_chicken()
 
-    if chicken_food_timer == chicken_food_time:
+    if chicken_food_timer == chicken_food_time and chicken_food_in_progress:
         get_chicken_food()
     elif chicken_food_in_progress:
         chicken_food_timer += 1
